@@ -1,6 +1,6 @@
 import UIKit
 
-extension UIColor { 
+extension UIColor {
     static var ypBackground: UIColor { UIColor(named: "YP Background") ?? .darkGray }
     static var ypBlack: UIColor { UIColor(named: "YP Black") ?? .black }
     static var ypGray: UIColor { UIColor(named: "YP Gray") ?? .gray }

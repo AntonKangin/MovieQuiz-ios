@@ -1,7 +1,7 @@
 
 import UIKit
 
-class AlertPresenter: AlertPresenterProtocol {
+final class AlertPresenter: AlertPresenterProtocol {
     
     // MARK: - Public Properties
     weak var delegate: AlertPresenterDelegate?
