@@ -5,6 +5,10 @@ final class MovieQuizPresenter {
     
     // MARK: - Public Properties
     let questionAmount: Int = 10
+    var currentQuestion: QuizQuestion?
+    weak var viewController: MovieQuizViewController?
+    
+    // MARK: - Private Properties
     private var currentQuestionIndex: Int = 0
     
     // MARK: - Public Methods
@@ -26,5 +30,19 @@ final class MovieQuizPresenter {
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionAmount)")
         return questionStep
+    }
+    
+    func yesButtonClicked() {
+        guard let currentQuestion else { return }
+        let userAnswer = true
+        
+        viewController?.showAnswerResult(isCorrect: userAnswer == currentQuestion.correctAnswer)
+    }
+    
+    func noButtonClicked() {
+        guard let currentQuestion else { return }
+        let userAnswer = false
+        
+        viewController?.showAnswerResult(isCorrect: userAnswer == currentQuestion.correctAnswer)
     }
 }

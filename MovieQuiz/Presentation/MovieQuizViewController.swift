@@ -39,6 +39,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         alertPresenter?.delegate = self
         
         statisticService = StatisticService()
+        
+        presenter.viewController = self
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -70,30 +72,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     // MARK: - IB Actions
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        guard let currentQuestion else { return }
-        let userAnswer = true
-        
-        showAnswerResult(isCorrect: userAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
     
     @IBAction private func noButtonClicked(_ sender: Any) {
-        guard let currentQuestion else { return }
-        let userAnswer = false
-        
-        showAnswerResult(isCorrect: userAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
     
-    // MARK: - Private Methods
-    private func show(quiz step: QuizStepViewModel) {
-        noButton.isEnabled = true
-        yesButton.isEnabled = true
-        
-        imageView.image = step.image
-        textLabel.text = step.question
-        counterLabel.text = step.questionNumber
-    }
-    
-    private func showAnswerResult(isCorrect: Bool) {
+    // MARK: - Public Methods
+    func showAnswerResult(isCorrect: Bool) {
         noButton.isEnabled = false
         yesButton.isEnabled = false
         
@@ -108,6 +97,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             guard let self = self else { return }
             self.showNextQuestionOrResults()
         }
+    }
+    
+    // MARK: - Private Methods
+    private func show(quiz step: QuizStepViewModel) {
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
+        
+        imageView.image = step.image
+        textLabel.text = step.question
+        counterLabel.text = step.questionNumber
     }
     
     private func showNextQuestionOrResults() {
