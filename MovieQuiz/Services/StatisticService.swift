@@ -1,7 +1,7 @@
 
 import Foundation
 
-class StatisticService: StatisticServiceProtocol {
+final class StatisticService: StatisticServiceProtocol {
     
     // MARK: - Public Properties
     var totalCorrectAnswers: Int {
