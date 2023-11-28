@@ -6,7 +6,7 @@ enum NetworkError: Error {
     case custom(message: String)
 }
 
-struct NetworkClient {
+struct NetworkClient: NetworkRoutingProtocol {
     
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
         let request = URLRequest(url: url)

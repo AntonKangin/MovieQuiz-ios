@@ -14,12 +14,15 @@ final class AlertPresenter: AlertPresenterProtocol {
             message: alert.message,
             preferredStyle: .alert)
         
+        controller.view.accessibilityIdentifier = "Alert"
+        
         let action = UIAlertAction(
             title: alert.buttonText,
             style: .default,
             handler: { [weak self] _ in
                 self?.delegate?.alertDidClose()
             })
+        
         controller.addAction(action)
         viewController.present(controller, animated: true)
     }
