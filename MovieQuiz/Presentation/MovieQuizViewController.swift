@@ -27,6 +27,8 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupView()
+        
         showLoadingIndicator()
         
         alertPresenter = AlertPresenter()
@@ -52,11 +54,8 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
     
     // MARK: - Public Methods
     func highlightImageBorder(isCorrectAnswer: Bool) {
-        imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
         buttonsIsEnabled(isEnabled: false)
     }
     
@@ -102,5 +101,10 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
     private func buttonsIsEnabled(isEnabled: Bool) {
         noButton.isEnabled = isEnabled
         yesButton.isEnabled = isEnabled
+    }
+    
+    private func setupView() {
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
     }
 }
