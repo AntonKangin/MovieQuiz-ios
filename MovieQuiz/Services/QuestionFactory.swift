@@ -19,17 +19,24 @@ final class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Public Methods
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            let index = (0..<self.movies.count).randomElement() ?? 0
-            
-            guard let movie = self.movies[safe: index] else { return }
+            guard
+                let self = self,
+                let index = (0..<self.movies.count).randomElement(),
+                let movie = self.movies[safe: index]
+            else {
+                return
+            }
             
             var imageData = Data()
             
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
-                print("Failed to load image")
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.delegate?.didFailToLoadData(with: error)
+                }
+                return
             }
             
             let rating = Float(movie.rating) ?? 0
@@ -38,13 +45,12 @@ final class QuestionFactory: QuestionFactoryProtocol {
             let randomComparison = Bool.random()
             
             var text: String {
-                if randomComparison { return "Рейтинг этого фильма больше чем \(randomRating)?" }
-                return "Рейтинг этого фильма меньше чем \(randomRating)?"
+                return randomComparison ? "Рейтинг этого фильма больше чем \(randomRating)?" :
+                "Рейтинг этого фильма меньше чем \(randomRating)?"
             }
             
             var correctAnswer: Bool {
-                if randomComparison { return rating > randomRating }
-                return rating < randomRating
+                return randomComparison ? rating > randomRating : rating < randomRating
             }
             
             let question = QuizQuestion(image: imageData,
